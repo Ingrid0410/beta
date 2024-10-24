@@ -4,17 +4,20 @@
    //Get data from register form
    $email = $_POST['email'];	
    $pass = $_POST['passwd'];
+   //Encrypt password with md5 hashing algorithm
    $enc_pass = md5($pass);
-   //validate if email already email
-   $query = "SELECT * FROM users WHERE email = '$email'";
+   //query to inset data into user table
+   $query = "SELECT * from users where email = '$email'";
    $result = pg_query($conn, $query);
    $row = pg_fetch_assoc($result);
-   
    if($row) {
-     echo "<script>alert('Email already exists!');</script>";
-     header('Refresh:0;url=http://127.0.0.1/beta/api/src/register_form.html');
-     exit;
+      // echo "Registration successful!";
+      echo "<script>alert('Email already exist!');</script>";
+      header('Refresh:0;url=http://127.0.0.1/beta/api/src/register_form.html');
+      exit();
    }
+   
+   //validate if email already exists
    //query to inset data into user table
    $query = "INSERT INTO users (email, password) 
              VALUES ('$email', '$enc_pass')";
@@ -32,10 +35,4 @@
 
    pg_close($conn);
 
-
-
-   //echo "Email: " . $email;
-   //echo "<br>Passwords: " . $pass;
-   //echo "<br>Enc. Password: " . $enc_pass;
 ?>
-
